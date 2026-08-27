@@ -1,0 +1,36 @@
+<Window x:Class="QuickOcr.Capture.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuickOcr 框选"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        Cursor="Cross"
+        KeyDown="OnKeyDown"
+        MouseLeftButtonDown="OnMouseLeftButtonDown"
+        MouseMove="OnMouseMove"
+        MouseLeftButtonUp="OnMouseLeftButtonUp"
+        MouseDoubleClick="OnDoubleClick">
+    <Grid>
+        <Canvas x:Name="DrawCanvas" Background="Transparent">
+            <!-- 遮罩：EvenOdd 规则挖洞，选区外暗化、选区内透明高亮 -->
+            <Path x:Name="MaskPath" Fill="#CC000000"/>
+            <!-- 选区边框：Fill 用 alpha=1 近透明填充，既不遮挡原内容，又可在透明窗口选区内接收鼠标事件（避免穿透） -->
+            <Rectangle x:Name="SelectionBorder" Stroke="#4B3FE3" StrokeThickness="2" Fill="#01000000"/>
+            <!-- 微调手柄层 -->
+            <Canvas x:Name="HandleLayer"/>
+            <!-- 选区尺寸提示 -->
+            <Border x:Name="SizeBadge" Background="#CC4B3FE3" CornerRadius="3" Padding="6,2" Visibility="Collapsed">
+                <TextBlock x:Name="SizeLabel" Foreground="White" FontSize="12"/>
+            </Border>
+        </Canvas>
+        <!-- 底部操作提示条 -->
+        <Border x:Name="HintBar" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,16"
+                Background="#E6000000" CornerRadius="4" Padding="12,6" Visibility="Collapsed">
+            <TextBlock x:Name="HintText" Foreground="White" FontSize="13"/>
+        </Border>
+    </Grid>
+</Window>

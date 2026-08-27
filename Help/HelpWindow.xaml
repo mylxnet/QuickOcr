@@ -1,0 +1,48 @@
+<Window x:Class="QuickOcr.Help.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuickOcr 帮助手册" Width="560" Height="640"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24,16">
+
+            <TextBlock Text="QuickOcr 帮助手册" FontSize="18" FontWeight="Bold" Margin="0,0,0,16"/>
+
+            <TextBlock Text="快速上手" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,16"
+                       Text="按全局快捷键弹出全屏遮罩，拖拽框选屏幕文字区域，松开后进入微调模式，可移动选区或拖动手柄调整大小，在选区内单击或按 Enter 确认识别。"/>
+
+            <TextBlock Text="快捷键" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <TextBlock x:Name="HotkeyText" TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+            <TextBlock Text="框选与微调" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 拖拽框选区域"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 拖选区内部：整体移动"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 拖四角/边手柄：调整大小"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 选区内单击 / Enter / 双击：确认"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,16" Text="· ESC：取消"/>
+
+            <TextBlock Text="识别引擎" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4"
+                       Text="· Tesseract 本地引擎：首次自动下载 chi_sim/eng 语言包到 %AppData%\QuickOcr\tessdata"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,16"
+                       Text="· 自定义 HTTP API：按约定 POST 图片，返回 JSON"/>
+
+            <TextBlock Text="自定义 API 约定" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 方法：POST {URL}"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 字段：multipart/form-data，image=图片文件"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,16" Text="· 返回：{&quot;text&quot;:&quot;识别结果&quot;}"/>
+
+            <TextBlock Text="容错说明" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 识别中再按热键将被忽略（串行锁）"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 记事本窗口复用，不重复打开"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,16" Text="· 单实例：重复启动仅唤醒已有进程"/>
+
+            <TextBlock Text="常见问题" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 热键无效：可能被其他程序占用，到设置中更换"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,4" Text="· 识别效果差：框选更清晰、更大的文字区域"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,16" Text="· 语言包下载失败：检查网络，或手动放入 tessdata 目录"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

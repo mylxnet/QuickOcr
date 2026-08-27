@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <!-- 抑制 WinForms 对 app.manifest DPI 设置的分析器警告（WPF 仍需 manifest 声明 PerMonitorV2） -->
+    <NoWarn>WFAC010</NoWarn>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>QuickOcr</AssemblyName>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <RootNamespace>QuickOcr</RootNamespace>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Company>QuickOcr</Company>
+    <Product>QuickOcr</Product>
+  </PropertyGroup>
+
+  <!-- 区域截图依赖 GDI+ CopyFromScreen -->
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
+  </ItemGroup>
+
+  <!-- 应用图标：exe 图标 + 嵌入资源（托盘 pack URI 加载） -->
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
+  </ItemGroup>
+
+  <!-- Tesseract native 库随包发布到 x64 子目录（Patagames 运行时从此加载）。
+       Content/CopyToPublishDirectory 在某些 publish 模式下不生效，改用 Target 强制复制。 -->
+  <Target Name="CopyTesseractNative" AfterTargets="Publish">
+    <ItemGroup>
+      <NativeFiles Include="$(NuGetPackageRoot)tesseract\5.2.0\x64\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NativeFiles)" DestinationFolder="$(PublishDir)x64" SkipUnchangedFiles="true" />
+  </Target>
+
+  <!-- app.manifest 设 PerMonitorV2 DPI 感知 -->
+  <ItemGroup>
+    <None Update="app.manifest">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- 移除 WinForms 自动引入的 System.Drawing/System.Windows.Forms 全局 using，避免与 WPF 命名空间冲突 -->
+  <ItemGroup>
+    <Using Remove="System.Drawing" />
+    <Using Remove="System.Windows.Forms" />
+  </ItemGroup>
+
+</Project>

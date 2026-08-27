@@ -1,0 +1,29 @@
+<Window x:Class="QuickOcr.About.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="关于 QuickOcr" Width="400" Height="380"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+    <Grid VerticalAlignment="Center">
+        <StackPanel Margin="24" HorizontalAlignment="Center">
+            <TextBlock Text="QuickOcr" FontSize="24" FontWeight="Bold"
+                       HorizontalAlignment="Center" Margin="0,0,0,4"/>
+            <TextBlock x:Name="VersionText" HorizontalAlignment="Center"
+                       Opacity="0.7" Margin="0,0,0,20"/>
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,16">
+                屏幕文字识别工具<LineBreak/>快捷键框选 · 微调 · 记事本打开
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"
+                       Opacity="0.7" Margin="0,0,0,4">
+                技术栈：.NET 8 / WPF / Tesseract
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"
+                       Opacity="0.7" Margin="0,0,0,20">
+                Tesseract 许可：Apache 2.0<LineBreak/>语言数据：tesseract-ocr/tessdata_fast
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"
+                       Opacity="0.5" Text="© 2026 QuickOcr · by Mr Lin"/>
+        </StackPanel>
+    </Grid>
+</Window>

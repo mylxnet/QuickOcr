@@ -1,0 +1,53 @@
+<Window x:Class="QuickOcr.Settings.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuickOcr 设置" Width="460" Height="600"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+    <DockPanel LastChildFill="False">
+        <!-- 底部按钮 -->
+        <Border DockPanel.Dock="Bottom" Background="#EAEAEA" Padding="16,10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnSave" Content="保存" Width="96" Margin="0,0,8,0"
+                        IsDefault="True" Click="OnSave"/>
+                <Button x:Name="BtnCancel" Content="取消" Width="96"
+                        IsCancel="True" Click="OnCancel"/>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20,16,20,8">
+
+                <!-- 快捷键 -->
+                <TextBlock Text="快捷键" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <TextBox x:Name="HotkeyBox" IsReadOnly="True"
+                         PreviewKeyDown="OnHotkeyPreviewKeyDown"
+                         GotFocus="OnHotkeyGotFocus"
+                         HorizontalContentAlignment="Center" Padding="6"/>
+                <TextBlock Text="点击上方框内后按下组合键（需至少含 Ctrl/Shift/Alt/Win）"
+                           Opacity="0.6" FontSize="11" Margin="0,4,0,20"/>
+
+                <!-- 引擎 -->
+                <TextBlock Text="识别引擎" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <RadioButton x:Name="EngineTesseract" Content="Tesseract 本地引擎" Checked="OnEngineChanged"/>
+                <RadioButton x:Name="EngineHttpApi" Content="自定义 HTTP API" Checked="OnEngineChanged" Margin="0,0,0,12"/>
+                <TextBlock Text="Tesseract 语言（例如 chi_sim+eng）" Margin="0,0,0,4"/>
+                <TextBox x:Name="LanguageBox" Padding="6" Margin="0,0,0,20"/>
+
+                <!-- API -->
+                <TextBlock Text="自定义 API 地址" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <TextBox x:Name="ApiUrlBox" Padding="6" Margin="0,0,0,10"/>
+                <TextBlock Text="鉴权头名称（可选）" Margin="0,0,0,4"/>
+                <TextBox x:Name="ApiHeaderNameBox" Padding="6" Margin="0,0,0,10"/>
+                <TextBlock Text="鉴权头值（可选）" Margin="0,0,0,4"/>
+                <TextBox x:Name="ApiHeaderValueBox" Padding="6" Margin="0,0,0,20"/>
+
+                <!-- 选项 -->
+                <CheckBox x:Name="ClipboardBox" Content="识别后复制到剪贴板" Margin="0,0,0,8"/>
+                <CheckBox x:Name="NotepadBox" Content="识别后用记事本打开" Margin="0,0,0,8"/>
+                <CheckBox x:Name="AutoStartBox" Content="开机自启" Margin="0,0,0,8"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
