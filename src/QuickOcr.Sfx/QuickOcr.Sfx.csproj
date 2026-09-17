@@ -11,7 +11,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <AssemblyName>QuickOcr_Setup</AssemblyName>
     <RootNamespace>QuickOcr.Sfx</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Company>QuickOcr</Company>
   </PropertyGroup>
 

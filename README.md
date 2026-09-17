@@ -81,7 +81,7 @@ flowchart LR
 
 | 文件 | 大小 | 说明 |
 |---|---|---|
-| `QuickOcr_Setup.exe` | 约 226 MB | 单文件自解压安装器。双击后解压到 `%LocalAppData%\QuickOcr\1.0.0\` 并自动启动，目标机**无需安装 .NET** |
+| `QuickOcr_Setup.exe` | 约 226 MB | 单文件自解压安装器。双击后解压到 `%LocalAppData%\QuickOcr\1.0.1\` 并自动启动，目标机**无需安装 .NET** |
 | `publish.zip` | 约 72 MB | 免安装绿色版。解压到任意目录后直接运行 `QuickOcr.exe` |
 
 ### 系统要求
@@ -180,7 +180,7 @@ def ocr():
 | 日志文件 | `%AppData%\QuickOcr\logs\QuickOcr_yyyyMMdd.log` |
 | Tesseract 语言包 | `%AppData%\QuickOcr\tessdata\*.traineddata` |
 | 识别结果临时文件 | `%Temp%\QuickOcr\result.txt` |
-| 安装器解压目录 | `%LocalAppData%\QuickOcr\1.0.0\` |
+| 安装器解压目录 | `%LocalAppData%\QuickOcr\1.0.1\` |
 
 配置、日志与语言包均可安全删除，程序会按需重新生成。
 

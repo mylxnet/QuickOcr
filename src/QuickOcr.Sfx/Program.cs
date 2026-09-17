@@ -6,7 +6,7 @@ using System.Reflection;
 // QuickOcr 自解压安装器：嵌入 publish.zip，解压到 LocalAppData 后启动主程序。
 // 单文件 self-contained exe，目标机无需安装 .NET。
 
-const string Version = "1.0.0";
+const string Version = "1.0.1";
 var dest = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
     "QuickOcr", Version);

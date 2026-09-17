@@ -1,4 +1,4 @@
-# QuickOcr v1.0.0 一键发布脚本
+# QuickOcr v1.0.1 一键发布脚本
 # 生成 dist\QuickOcr_Setup.exe（单文件安装器，目标机无需安装 .NET）
 # 用法：powershell -ExecutionPolicy Bypass -File build.ps1
 
