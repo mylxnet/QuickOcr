@@ -15,6 +15,16 @@
     <Company>QuickOcr</Company>
   </PropertyGroup>
 
+  <!-- publish.zip 由 build.ps1 第 2 步生成（主程序 publish 后打包）。
+       单独 build 本项目时若缺失，则生成占位文件让编译通过；正式发布走 build.ps1 全流程。 -->
+  <Target Name="EnsurePublishZip" BeforeTargets="PrepareForBuild">
+    <WriteLinesToFile
+      Condition="!Exists('publish.zip')"
+      File="publish.zip"
+      Lines="placeholder - not a real installer payload"
+      Overwrite="false" />
+  </Target>
+
   <ItemGroup>
     <EmbeddedResource Include="publish.zip" />
   </ItemGroup>
