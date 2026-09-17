@@ -19,6 +19,7 @@ public sealed class GlobalHotkeyService : IDisposable
     private readonly Dictionary<int, Action> _callbacks = new();
     private int _nextId = 9000;
     private int? _currentId;
+    private HotkeyDefinition? _currentHk;
 
     private void EnsureSource()
     {
@@ -50,16 +51,23 @@ public sealed class GlobalHotkeyService : IDisposable
         return IntPtr.Zero;
     }
 
-    /// <summary>注册热键。返回 false 表示组合被占用。</summary>
+    /// <summary>注册热键。返回 false 表示组合被占用；此时已注册的旧热键保持有效，不会丢失。</summary>
     public bool Register(HotkeyDefinition hk, Action callback)
     {
         EnsureSource();
-        Unregister();
+
+        // 与当前组合相同：保留现有注册，仅更新回调（重复注册同一组合会被系统拒绝）
+        if (_currentId.HasValue && _currentHk == hk)
+        {
+            _callbacks[_currentId.Value] = callback;
+            return true;
+        }
 
         int id = _nextId++;
         uint mods = (uint)hk.Modifiers;
         uint vk = (uint)KeyInterop.VirtualKeyFromKey(hk.Key);
 
+        // 先注册新组合（旧热键此刻仍生效）；失败则旧热键原样保留
         if (!Win32.RegisterHotKey(_source!.Handle, id, mods, vk))
         {
             int err = Marshal.GetLastWin32Error();
@@ -67,8 +75,16 @@ public sealed class GlobalHotkeyService : IDisposable
             return false;
         }
 
+        // 新组合注册成功后再释放旧热键
+        int? oldId = _currentId;
         _callbacks[id] = callback;
         _currentId = id;
+        _currentHk = hk;
+        if (oldId.HasValue)
+        {
+            try { Win32.UnregisterHotKey(_source.Handle, oldId.Value); } catch { }
+            _callbacks.Remove(oldId.Value);
+        }
         return true;
     }
 
@@ -79,6 +95,7 @@ public sealed class GlobalHotkeyService : IDisposable
             try { Win32.UnregisterHotKey(_source.Handle, _currentId.Value); } catch { }
             _callbacks.Remove(_currentId.Value);
             _currentId = null;
+            _currentHk = null;
         }
     }
 

@@ -45,15 +45,24 @@ public sealed class SettingsService
 
     public void Save()
     {
+        // 先写同目录临时文件，再原子替换目标文件，
+        // 避免写入中途崩溃/断电留下半截 settings.json 导致设置全部丢失
+        var tmpPath = SettingsPath + ".tmp";
         try
         {
             Directory.CreateDirectory(AppDir);
             var json = JsonSerializer.Serialize(Current, JsonOpts);
-            File.WriteAllText(SettingsPath, json);
+            File.WriteAllText(tmpPath, json);
+
+            if (File.Exists(SettingsPath))
+                File.Replace(tmpPath, SettingsPath, destinationBackupFileName: null);
+            else
+                File.Move(tmpPath, SettingsPath);
         }
         catch
         {
-            // 写入失败不影响主流程
+            // 写入失败不影响主流程；清理残留临时文件（尽力而为）
+            try { if (File.Exists(tmpPath)) File.Delete(tmpPath); } catch { }
         }
     }
 

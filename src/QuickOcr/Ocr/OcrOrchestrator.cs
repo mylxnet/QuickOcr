@@ -48,8 +48,8 @@ public sealed class OcrOrchestrator
             if (string.IsNullOrWhiteSpace(text)) text = "(未识别到文字)";
             Logger.Info($"识别完成：{text.Length} 字符，引擎={settings.Engine}");
 
-            // 4) 剪贴板（可选）+ 记事本复用打开（后台，避免阻塞 UI）
-            await CopyToClipboardAsync(text);
+            // 4) 剪贴板（可选，失败不视为识别失败）+ 记事本复用打开（后台，避免阻塞 UI）
+            await CopyToClipboardSafeAsync(text);
             await Task.Run(() => NotepadWriter.WriteAndOpen(text));
         }
         catch (Exception ex)
@@ -63,17 +63,19 @@ public sealed class OcrOrchestrator
         }
     }
 
-    // 剪贴板复制（需主线程 STA）
-    private Task CopyToClipboardAsync(string text)
+    // 剪贴板复制（需主线程 STA）。剪贴板被占用是常见情况，失败只降级提示，不影响识别结果输出
+    private async Task CopyToClipboardSafeAsync(string text)
     {
-        if (!SettingsService.Instance.Current.CopyToClipboard) return Task.CompletedTask;
-        var tcs = new TaskCompletionSource<object?>();
-        Application.Current.Dispatcher.Invoke(() =>
+        if (!SettingsService.Instance.Current.CopyToClipboard) return;
+        try
         {
-            try { Clipboard.SetText(text); tcs.SetResult(null); }
-            catch (Exception ex) { tcs.SetException(ex); }
-        });
-        return tcs.Task;
+            await Application.Current.Dispatcher.InvokeAsync(() => Clipboard.SetText(text));
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn("复制到剪贴板失败（识别结果仍会正常输出）：" + ex.Message);
+            await ShowErrorAsync("识别成功，但复制到剪贴板失败：" + ex.Message);
+        }
     }
 
     // 主线程错误提示
