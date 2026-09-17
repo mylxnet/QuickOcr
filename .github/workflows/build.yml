@@ -1,0 +1,32 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    name: Build (${{ matrix.project }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - src/QuickOcr/QuickOcr.csproj
+          - src/QuickOcr.Sfx/QuickOcr.Sfx.csproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore ${{ matrix.project }} -p:Platform=x64
+
+      - name: Build
+        run: dotnet build ${{ matrix.project }} -c Debug -p:Platform=x64 --no-restore
